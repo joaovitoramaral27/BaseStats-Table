@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Stats</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffff;
+            font-family: Arial, sans-serif;
+            color: black;
+        }
+
+        .stats-box {
+            width: 650px;
+            padding: 30px;
+            background: #f0f0f0;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 55px 1fr 80px;
+            align-items: center;
+            gap: 15px;
+            margin: 12px 0;
+        }
+
+        .stat-input {
+            width: 55px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            background: #ffffff;
+            color: black;
+            outline: none;
+        }
+
+        .stat-input:focus {
+            box-shadow: 0 0 0 2px #fff;
+        }
+
+        .bar-container {
+            height: 22px;
+            background: #d3d3d3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+
+            /* A cor também terá uma transição suave */
+            background: rgb(255, 0, 0);
+
+            transition:
+                width 0.25s ease,
+                background-color 0.25s ease;
+        }
+
+        .stat-name {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .total {
+            display: grid;
+            grid-template-columns: 55px 1fr 80px;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #444;
+        }
+
+        .total-label {
+            grid-column: 3;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .total-value {
+            grid-column: 1;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="stats-box">
+
+        <div class="stat-row">
+            <input class="stat-input" type="number" min="0" max="255" value="0">
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="stat-name">HP</div>
+        </div>
+
+        <div class="stat-row">
+            <input class="stat-input" type="number" min="0" max="255" value="0">
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="stat-name">Attack</div>
+        </div>
+
+        <div class="stat-row">
+            <input class="stat-input" type="number" min="0" max="255" value="0">
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="stat-name">Defense</div>
+        </div>
+
+        <div class="stat-row">
+            <input class="stat-input" type="number" min="0" max="255" value="0">
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="stat-name">Sp.Atk</div>
+        </div>
+
+        <div class="stat-row">
+            <input class="stat-input" type="number" min="0" max="255" value="0">
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="stat-name">Sp.Def</div>
+        </div>
+
+        <div class="stat-row">
+            <input class="stat-input" type="number" min="0" max="255" value="0">
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="stat-name">Speed</div>
+        </div>
+
+        <div class="total">
+            <div class="total-value" id="total">0</div>
+            <div class="total-label">Total</div>
+        </div>
+
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll(".stat-input");
+        const bars = document.querySelectorAll(".bar");
+        const totalElement = document.getElementById("total");
+
+
+        /*
+         * Interpola duas cores.
+         *
+         * Exemplo:
+         * 0   = vermelho
+         * 0.5 = cor intermediária
+         * 1   = laranja
+         */
+        function interpolateColor(color1, color2, factor) {
+
+            const r = Math.round(
+                color1[0] + (color2[0] - color1[0]) * factor
+            );
+
+            const g = Math.round(
+                color1[1] + (color2[1] - color1[1]) * factor
+            );
+
+            const b = Math.round(
+                color1[2] + (color2[2] - color1[2]) * factor
+            );
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+
+        /*
+         * Determina a cor da barra de acordo com o valor.
+         *
+         * 0-49     Vermelho
+         * 50-79    Laranja
+         * 80-99    Amarelo
+         * 100-129  Verde Claro
+         * 130-169  Verde Escuro
+         * 170-255  Ciano
+         */
+        function getStatColor(value) {
+
+            const vermelho = [255, 0, 0];
+            const laranja = [255, 128, 0];
+            const amarelo = [255, 220, 0];
+            const verdeClaro = [173, 255, 47];
+            const verdeEscuro = [0, 128, 0];
+            const ciano = [0, 255, 255];
+
+
+            // Transição concentrada no final da faixa
+            function lateTransition(value, start, end, transitionSize = 10) {
+
+                const transitionStart = end - transitionSize;
+
+                // Ainda está na cor anterior
+                if (value < transitionStart) {
+                    return 0;
+                }
+
+                // Está na zona de transição
+                let factor =
+                    (value - transitionStart) /
+                    (end - transitionStart);
+
+                // Suavização
+                factor = factor * factor * (3 - 2 * factor);
+
+                return factor;
+            }
+
+
+            // 0 - 49
+            if (value < 50) {
+
+                const factor = lateTransition(value, 0, 49, 10);
+
+                return interpolateColor(
+                    vermelho,
+                    laranja,
+                    factor
+                );
+            }
+
+
+            // 50 - 79
+            if (value < 80) {
+
+                const factor = lateTransition(value, 50, 79, 8);
+
+                return interpolateColor(
+                    laranja,
+                    amarelo,
+                    factor
+                );
+            }
+
+
+            // 80 - 99
+            if (value < 100) {
+
+                const factor = lateTransition(value, 80, 99, 6);
+
+                return interpolateColor(
+                    amarelo,
+                    verdeClaro,
+                    factor
+                );
+            }
+
+
+            // 100 - 129
+            if (value < 130) {
+
+                const factor = lateTransition(value, 100, 129, 8);
+
+                return interpolateColor(
+                    verdeClaro,
+                    verdeEscuro,
+                    factor
+                );
+            }
+
+
+            // 130 - 169
+            if (value < 170) {
+
+                const factor = lateTransition(value, 130, 169, 10);
+
+                return interpolateColor(
+                    verdeEscuro,
+                    ciano,
+                    factor
+                );
+            }
+
+
+            // 170+
+            return `rgb(
+                ${ciano[0]},
+                ${ciano[1]},
+                ${ciano[2]}
+            )`;
+        }
+
+
+        function updateStats() {
+
+            let total = 0;
+
+            inputs.forEach((input, index) => {
+
+                let value = Number(input.value);
+
+
+                // Impede valores abaixo de 0
+                if (value < 0) {
+                    value = 0;
+                    input.value = 0;
+                }
+
+
+                // Impede valores acima de 255
+                if (value > 255) {
+                    value = 255;
+                    input.value = 255;
+                }
+
+
+                total += value;
+
+
+                // Tamanho da barra
+                const percentage = (value / 255) * 100;
+
+                bars[index].style.width = percentage + "%";
+
+
+                // Cor da barra
+                bars[index].style.backgroundColor = getStatColor(value);
+            });
+
+
+            // Atualiza o total
+            totalElement.textContent = total;
+        }
+
+
+        // Detecta mudanças nos inputs
+        inputs.forEach(input => {
+            input.addEventListener("input", updateStats);
+        });
+
+
+        // Atualiza ao abrir a página
+        updateStats();
+
+    </script>
+
+</body>
+</html>
