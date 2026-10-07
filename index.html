@@ -20,10 +20,12 @@
             font-family: Arial, sans-serif;
             color: black;
             flex-direction: column;
+            padding: 20px;
         }
 
         .stats-box {
             width: 650px;
+            max-width: 100%;
             padding: 30px;
             background: #f0f0f0;
             border-radius: 16px;
@@ -114,7 +116,115 @@
             cursor: pointer;
         }
 
+
+        /* =========================
+           RESPONSIVIDADE
+           ========================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+                justify-content: center;
+            }
+
+            .stats-box {
+                width: 100%;
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+
+            .stat-row {
+                grid-template-columns: 50px minmax(0, 1fr) 65px;
+                gap: 10px;
+                margin: 10px 0;
+            }
+
+            .stat-input {
+                width: 50px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .bar-container {
+                height: 20px;
+            }
+
+            .stat-name {
+                font-size: 14px;
+            }
+
+            .total {
+                grid-template-columns: 50px minmax(0, 1fr) 65px;
+                gap: 10px;
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+
+            .total-label {
+                font-size: 16px;
+            }
+
+            .total-value {
+                font-size: 18px;
+            }
+
+            button {
+                width: 100%;
+                max-width: 300px;
+                margin-top: 30px;
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+        }
+
+
+        /* Celulares bem pequenos */
+
+        @media (max-width: 380px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .stats-box {
+                padding: 15px 10px;
+            }
+
+            .stat-row {
+                grid-template-columns: 45px minmax(0, 1fr) 58px;
+                gap: 7px;
+            }
+
+            .stat-input {
+                width: 45px;
+                font-size: 13px;
+            }
+
+            .stat-name {
+                font-size: 13px;
+            }
+
+            .bar-container {
+                height: 18px;
+            }
+
+            .total {
+                grid-template-columns: 45px minmax(0, 1fr) 58px;
+                gap: 7px;
+            }
+
+            .total-label {
+                font-size: 15px;
+            }
+
+            .total-value {
+                font-size: 17px;
+            }
+        }
+
     </style>
+
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 
@@ -179,10 +289,13 @@
 
     <button onclick="downloadStats()">Download Stats Table</button>
 
+
     <script>
+
         const inputs = document.querySelectorAll(".stat-input");
         const bars = document.querySelectorAll(".bar");
         const totalElement = document.getElementById("total");
+
 
         function interpolateColor(color1, color2, factor) {
 
@@ -201,6 +314,7 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
+
         function getStatColor(value) {
 
             const vermelho = [255, 0, 0];
@@ -209,6 +323,7 @@
             const verdeClaro = [173, 255, 47];
             const verdeEscuro = [0, 128, 0];
             const ciano = [0, 255, 255];
+
 
             function lateTransition(value, start, end, transitionSize) {
 
@@ -223,10 +338,12 @@
                     (end - transitionStart);
 
                 factor = Math.max(0, Math.min(1, factor));
+
                 factor = factor * factor * (3 - 2 * factor);
 
                 return factor;
             }
+
 
             if (value < 50) {
 
@@ -244,6 +361,7 @@
                 );
             }
 
+
             if (value < 80) {
 
                 const factor = lateTransition(
@@ -259,6 +377,7 @@
                     factor
                 );
             }
+
 
             if (value < 100) {
 
@@ -276,6 +395,7 @@
                 );
             }
 
+
             if (value < 130) {
 
                 const factor = lateTransition(
@@ -291,6 +411,7 @@
                     factor
                 );
             }
+
 
             if (value < 170) {
 
@@ -308,12 +429,14 @@
                 );
             }
 
+
             return `rgb(
                 ${ciano[0]},
                 ${ciano[1]},
                 ${ciano[2]}
             )`;
         }
+
 
         function updateStats() {
 
@@ -337,36 +460,49 @@
 
                 const percentage = (value / 255) * 100;
 
-                bars[index].style.width = percentage + "%";
+                bars[index].style.width =
+                    percentage + "%";
 
-                bars[index].style.backgroundColor = getStatColor(value);
+                bars[index].style.backgroundColor =
+                    getStatColor(value);
             });
 
             totalElement.textContent = total;
         }
 
+
         inputs.forEach(input => {
-            input.addEventListener("input", updateStats);
+            input.addEventListener(
+                "input",
+                updateStats
+            );
         });
+
 
         updateStats();
 
+
         async function downloadStats() {
 
-            const element = document.getElementById("stats-box");
+            const element =
+                document.getElementById("stats-box");
 
             const canvas = await html2canvas(element, {
                 scale: 2,
                 backgroundColor: "#f0f0f0"
             });
 
-            const link = document.createElement("a");
+            const link =
+                document.createElement("a");
 
             link.download = "Stats-Table.png";
-            link.href = canvas.toDataURL("image/png");
+
+            link.href =
+                canvas.toDataURL("image/png");
 
             link.click();
         }
+
     </script>
 
 </body>
