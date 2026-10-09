@@ -1,0 +1,199 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffff;
+    font-family: Arial, sans-serif;
+    color: black;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.stats-box {
+    width: 650px;
+    max-width: 100%;
+    padding: 30px;
+    background: #f0f0f0;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.stat-row {
+    display: grid;
+    grid-template-columns: 55px 1fr 80px;
+    align-items: center;
+    gap: 15px;
+    margin: 12px 0;
+}
+
+.stat-input {
+    width: 55px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    background: #ffffff;
+    color: black;
+}
+
+.bar-container {
+    height: 22px;
+    background: #d3d3d3;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+
+    background: rgb(255, 0, 0);
+
+    transition:
+        width 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.stat-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.total {
+    display: grid;
+    grid-template-columns: 55px 1fr 80px;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #444;
+}
+
+.total-label {
+    grid-column: 3;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.total-value {
+    grid-column: 1;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+button {
+    margin-top: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    background-color: #d3d3d3;
+    border: black 1px solid;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 15px;
+        justify-content: center;
+    }
+
+    .stats-box {
+        width: 100%;
+        padding: 20px 15px;
+        border-radius: 12px;
+    }
+
+    .stat-row {
+        grid-template-columns: 50px minmax(0, 1fr) 65px;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .stat-input {
+        width: 50px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .bar-container {
+        height: 20px;
+    }
+
+    .stat-name {
+        font-size: 14px;
+    }
+
+    .total {
+        grid-template-columns: 50px minmax(0, 1fr) 65px;
+        gap: 10px;
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+
+    .total-label {
+        font-size: 16px;
+    }
+
+    .total-value {
+        font-size: 18px;
+    }
+
+    button {
+        width: 100%;
+        max-width: 300px;
+        margin-top: 30px;
+        padding: 12px 15px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .stats-box {
+        padding: 15px 10px;
+    }
+
+    .stat-row {
+        grid-template-columns: 45px minmax(0, 1fr) 58px;
+        gap: 7px;
+    }
+
+    .stat-input {
+        width: 45px;
+        font-size: 13px;
+    }
+
+    .stat-name {
+        font-size: 13px;
+    }
+
+    .bar-container {
+        height: 18px;
+    }
+
+    .total {
+        grid-template-columns: 45px minmax(0, 1fr) 58px;
+        gap: 7px;
+    }
+
+    .total-label {
+        font-size: 15px;
+    }
+
+    .total-value {
+        font-size: 17px;
+    }
+}
