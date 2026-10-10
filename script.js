@@ -5,17 +5,9 @@ const totalElement = document.getElementById("total");
 
 function interpolateColor(color1, color2, factor) {
 
-    const r = Math.round(
-        color1[0] + (color2[0] - color1[0]) * factor
-    );
-
-    const g = Math.round(
-        color1[1] + (color2[1] - color1[1]) * factor
-    );
-
-    const b = Math.round(
-        color1[2] + (color2[2] - color1[2]) * factor
-    );
+    const r = Math.round(color1[0] + (color2[0] - color1[0]) * factor);
+    const g = Math.round(color1[1] + (color2[1] - color1[1]) * factor);
+    const b = Math.round(color1[2] + (color2[2] - color1[2]) * factor);
 
     return `rgb(${r}, ${g}, ${b})`;
 }
@@ -37,9 +29,7 @@ function getStatColor(value) {
             return 0;
         }
 
-        let factor =
-            (value - transitionStart) /
-            (end - transitionStart);
+        let factor = (value - transitionStart) / (end - transitionStart);
 
         factor = Math.max(0, Math.min(1, factor));
 
@@ -48,99 +38,43 @@ function getStatColor(value) {
         return factor;
     }
 
-
     if (value < 50) {
 
-        const factor = lateTransition(
-            value,
-            0,
-            49,
-            10
-        );
+        const factor = lateTransition(value, 0, 49, 10);
 
-        return interpolateColor(
-            vermelho,
-            laranja,
-            factor
-        );
+        return interpolateColor(vermelho, laranja, factor);
     }
-
 
     if (value < 80) {
 
-        const factor = lateTransition(
-            value,
-            50,
-            79,
-            7
-        );
+        const factor = lateTransition(value, 50, 79, 7);
 
-        return interpolateColor(
-            laranja,
-            amarelo,
-            factor
-        );
+        return interpolateColor(laranja, amarelo, factor);
     }
-
 
     if (value < 100) {
 
-        const factor = lateTransition(
-            value,
-            80,
-            99,
-            5
-        );
+        const factor = lateTransition(value, 80, 99, 5);
 
-        return interpolateColor(
-            amarelo,
-            verdeClaro,
-            factor
-        );
+        return interpolateColor(amarelo, verdeClaro, factor);
     }
-
 
     if (value < 130) {
 
-        const factor = lateTransition(
-            value,
-            100,
-            129,
-            7
-        );
+        const factor = lateTransition(value, 100, 129, 7);
 
-        return interpolateColor(
-            verdeClaro,
-            verdeEscuro,
-            factor
-        );
+        return interpolateColor(verdeClaro, verdeEscuro, factor);
     }
-
 
     if (value < 170) {
 
-        const factor = lateTransition(
-            value,
-            130,
-            169,
-            10
-        );
+        const factor = lateTransition(value, 130, 169, 10);
 
-        return interpolateColor(
-            verdeEscuro,
-            ciano,
-            factor
-        );
+        return interpolateColor(verdeEscuro, ciano, factor);
     }
 
-
-    return `rgb(
-        ${ciano[0]},
-        ${ciano[1]},
-        ${ciano[2]}
-    )`;
+    return `rgb(${ciano[0]}, ${ciano[1]}, ${ciano[2]})`;
 }
-
 
 function updateStats() {
 
@@ -164,27 +98,19 @@ function updateStats() {
 
         const percentage = (value / 255) * 100;
 
-        bars[index].style.width =
-            percentage + "%";
+        bars[index].style.width = percentage + "%";
 
-        bars[index].style.backgroundColor =
-            getStatColor(value);
+        bars[index].style.backgroundColor = getStatColor(value);
     });
 
     totalElement.textContent = total;
 }
 
-
 inputs.forEach(input => {
-    input.addEventListener(
-        "input",
-        updateStats
-    );
+    input.addEventListener("input", updateStats);
 });
 
-
 updateStats();
-
 
 async function downloadStats() {
     const element = document.getElementById("stats-box");
