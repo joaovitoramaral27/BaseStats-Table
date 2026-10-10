@@ -187,22 +187,21 @@ updateStats();
 
 
 async function downloadStats() {
+    const element = document.getElementById("stats-box");
+    const tableName = document.getElementById("table-name").value.trim();
 
-    const element =
-        document.getElementById("stats-box");
+    // Usa o nome digitado ou um nome padrão caso o input esteja vazio
+    const fileName = tableName || "Stats-Table";
 
     const canvas = await html2canvas(element, {
         scale: 2,
         backgroundColor: "#f0f0f0"
     });
 
-    const link =
-        document.createElement("a");
+    const link = document.createElement("a");
 
-    link.download = "Stats-Table.png";
-
-    link.href =
-        canvas.toDataURL("image/png");
+    link.download = `${fileName}.png`;
+    link.href = canvas.toDataURL("image/png");
 
     link.click();
 }

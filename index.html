@@ -3,72 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base Stats</title>
+    <title>-BST Table Simulator-</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
 
-    <div class="stats-box" id="stats-box">
+    <header>
+        <h1>BST Table Simulator</h1>
+    </header>
+    <main>
+        <input type="text" id="table-name" placeholder="Enter your table name" />
 
-        <div class="stat-row">
-            <input class="stat-input" type="number" min="0" max="255" value="0">
-            <div class="bar-container">
-                <div class="bar"></div>
-            </div>
-            <div class="stat-name">HP</div>
+        <div class="stats-box" id="stats-box">
+
+            <section class="stat-row">
+                <input class="stat-input" type="number" min="0" max="255" value="0">
+                <div class="bar-container">
+                    <div class="bar"></div>
+                </div>
+                <div class="stat-name">HP</div>
+            </section>
+
+            <section class="stat-row">
+                <input class="stat-input" type="number" min="0" max="255" value="0">
+                <div class="bar-container">
+                    <div class="bar"></div>
+                </div>
+                <div class="stat-name">Attack</div>
+            </section>
+
+            <section class="stat-row">
+                <input class="stat-input" type="number" min="0" max="255" value="0">
+                <div class="bar-container">
+                    <div class="bar"></div>
+                </div>
+                <div class="stat-name">Defense</div>
+            </section>
+
+            <section class="stat-row">
+                <input class="stat-input" type="number" min="0" max="255" value="0">
+                <div class="bar-container">
+                    <div class="bar"></div>
+                </div>
+                <div class="stat-name">Sp.Atk</div>
+            </section>
+
+            <section class="stat-row">
+                <input class="stat-input" type="number" min="0" max="255" value="0">
+                <div class="bar-container">
+                    <div class="bar"></div>
+                </div>
+                <div class="stat-name">Sp.Def</div>
+            </section>
+
+            <section class="stat-row">
+                <input class="stat-input" type="number" min="0" max="255" value="0">
+                <div class="bar-container">
+                    <div class="bar"></div>
+                </div>
+                <div class="stat-name">Speed</div>
+            </section>
+
+            <section class="total">
+                <div class="total-value" id="total">0</div>
+                <div class="total-label">Total</div>
+            </section>
+
         </div>
 
-        <div class="stat-row">
-            <input class="stat-input" type="number" min="0" max="255" value="0">
-            <div class="bar-container">
-                <div class="bar"></div>
-            </div>
-            <div class="stat-name">Attack</div>
-        </div>
-
-        <div class="stat-row">
-            <input class="stat-input" type="number" min="0" max="255" value="0">
-            <div class="bar-container">
-                <div class="bar"></div>
-            </div>
-            <div class="stat-name">Defense</div>
-        </div>
-
-        <div class="stat-row">
-            <input class="stat-input" type="number" min="0" max="255" value="0">
-            <div class="bar-container">
-                <div class="bar"></div>
-            </div>
-            <div class="stat-name">Sp.Atk</div>
-        </div>
-
-        <div class="stat-row">
-            <input class="stat-input" type="number" min="0" max="255" value="0">
-            <div class="bar-container">
-                <div class="bar"></div>
-            </div>
-            <div class="stat-name">Sp.Def</div>
-        </div>
-
-        <div class="stat-row">
-            <input class="stat-input" type="number" min="0" max="255" value="0">
-            <div class="bar-container">
-                <div class="bar"></div>
-            </div>
-            <div class="stat-name">Speed</div>
-        </div>
-
-        <div class="total">
-            <div class="total-value" id="total">0</div>
-            <div class="total-label">Total</div>
-        </div>
-
-    </div>
-
-    <button onclick="downloadStats()">Download Stats Table</button>
-
+        <button onclick="downloadStats()">Download Stats Table</button>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
