@@ -189,12 +189,12 @@ updateStats();
 async function downloadStats() {
     const element = document.getElementById("stats-box");
     const tableName = document.getElementById("table-name").value.trim();
+    const scale = Number(document.getElementById("table-scale").value);
 
-    // Usa o nome digitado ou um nome padrão caso o input esteja vazio
     const fileName = tableName || "Stats-Table";
 
     const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: scale,
         backgroundColor: "#f0f0f0"
     });
 
